@@ -3,16 +3,18 @@ import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
 import TrendsChart from "./TrendsChart";
 import { BarChart2 } from "lucide-react";
+import { getTrendsDaysLimit } from "@/lib/planLimits";
 
 export default async function TrendsPage() {
   const { userId } = await auth();
   if (!userId) redirect("/login");
 
-  const ninetyDaysAgo = new Date();
-  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+  const trendsDays = await getTrendsDaysLimit(userId);
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - trendsDays);
 
   const readings = await prisma.reading.findMany({
-    where: { userId, takenAt: { gte: ninetyDaysAgo } },
+    where: { userId, takenAt: { gte: cutoffDate } },
     orderBy: { takenAt: "asc" },
     select: { id: true, value: true, type: true, classification: true, takenAt: true },
   });

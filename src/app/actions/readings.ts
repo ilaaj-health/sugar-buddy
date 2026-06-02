@@ -5,6 +5,7 @@ import { prisma } from '@/lib/db';
 import { classifyReading } from '@/lib/services/glucoseService';
 import { generateInterpretation } from '@/lib/services/aiService';
 import { checkEscalation } from '@/lib/services/safetyGate';
+import { checkReadingLimit } from '@/lib/planLimits';
 import { ReadingType, Classification } from '@/generated/prisma/client';
 
 export type ReadingState = {
@@ -18,6 +19,11 @@ export type ReadingState = {
 export async function logReading(state: ReadingState, formData: FormData): Promise<ReadingState> {
   const { userId } = await auth();
   if (!userId) throw new Error('You must be signed in to log a reading.');
+
+  const readingLimit = await checkReadingLimit(userId);
+  if (!readingLimit.allowed) {
+    return { message: `Aap ki monthly reading limit (${readingLimit.limit}) poori ho gayi hai. Pro plan lein for unlimited readings.` };
+  }
 
   const valueRaw = formData.get('value') as string;
   const type = formData.get('type') as string;
