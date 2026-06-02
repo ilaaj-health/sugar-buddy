@@ -55,13 +55,16 @@ function PricingContent() {
   const isPro = userPlan === "pro";
 
   // Auto-redirect to Stripe if user just signed up and came back with ?auto=true
+  // Wait for userPlan to load first — skip if already Pro
   useEffect(() => {
-    if (isLoaded && isSignedIn && searchParams.get("auto") === "true" && !autoTriggered.current) {
+    if (isLoaded && isSignedIn && userPlan !== null && searchParams.get("auto") === "true" && !autoTriggered.current) {
       autoTriggered.current = true;
-      handleUpgrade();
+      if (userPlan !== "pro") {
+        handleUpgrade();
+      }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoaded, isSignedIn, searchParams]);
+  }, [isLoaded, isSignedIn, userPlan, searchParams]);
 
   async function handleUpgrade() {
     if (!isSignedIn) {
