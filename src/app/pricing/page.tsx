@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
@@ -31,10 +31,28 @@ const PRO_FEATURES = [
 ];
 
 export default function PricingPage() {
+  return (
+    <Suspense>
+      <PricingContent />
+    </Suspense>
+  );
+}
+
+function PricingContent() {
   const { isSignedIn, isLoaded } = useUser();
   const [loading, setLoading] = useState(false);
+  const [userPlan, setUserPlan] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const autoTriggered = useRef(false);
+
+  // Fetch user plan
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      fetch("/api/stripe/plan").then(r => r.json()).then(d => setUserPlan(d.plan)).catch(() => {});
+    }
+  }, [isLoaded, isSignedIn]);
+
+  const isPro = userPlan === "pro";
 
   // Auto-redirect to Stripe if user just signed up and came back with ?auto=true
   useEffect(() => {
@@ -123,13 +141,19 @@ export default function PricingPage() {
                 <span className="text-sm text-zinc-400">/month</span>
                 <p className="text-xs text-zinc-400 mt-1">Cancel anytime</p>
               </div>
-              <button
-                onClick={handleUpgrade}
-                disabled={loading}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold text-white bg-primary rounded-xl hover:bg-primary-dark disabled:opacity-50 transition-colors shadow-lg shadow-primary/25 mb-6"
-              >
-                {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Redirecting...</> : <><Zap className="w-4 h-4" /> Pro Shuru Karein</>}
-              </button>
+              {isPro ? (
+                <div className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold text-primary bg-primary-light rounded-xl mb-6">
+                  <CheckCircle2 className="w-4 h-4" /> Aap ka Active Plan
+                </div>
+              ) : (
+                <button
+                  onClick={handleUpgrade}
+                  disabled={loading}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold text-white bg-primary rounded-xl hover:bg-primary-dark disabled:opacity-50 transition-colors shadow-lg shadow-primary/25 mb-6"
+                >
+                  {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Redirecting...</> : <><Zap className="w-4 h-4" /> Pro Shuru Karein</>}
+                </button>
+              )}
               <ul className="space-y-3 flex-1">
                 {PRO_FEATURES.map((f) => (
                   <li key={f.text} className="flex items-start gap-2.5">
