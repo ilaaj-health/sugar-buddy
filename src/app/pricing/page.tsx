@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useUser } from "@clerk/nextjs";
+import { useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import { CheckCircle2, X, Zap, Crown, Loader2 } from "lucide-react";
 
@@ -29,9 +31,25 @@ const PRO_FEATURES = [
 ];
 
 export default function PricingPage() {
+  const { isSignedIn, isLoaded } = useUser();
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const autoTriggered = useRef(false);
+
+  // Auto-redirect to Stripe if user just signed up and came back with ?auto=true
+  useEffect(() => {
+    if (isLoaded && isSignedIn && searchParams.get("auto") === "true" && !autoTriggered.current) {
+      autoTriggered.current = true;
+      handleUpgrade();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoaded, isSignedIn, searchParams]);
 
   async function handleUpgrade() {
+    if (!isSignedIn) {
+      window.location.href = "/signup#/?redirect_url=/pricing?auto=true";
+      return;
+    }
     setLoading(true);
     try {
       const res = await fetch("/api/stripe/checkout", { method: "POST" });
