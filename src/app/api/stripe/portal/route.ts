@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { stripe } from '@/lib/stripe';
+import { stripe as getStripe } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
 
 export async function POST() {
@@ -10,7 +10,7 @@ export async function POST() {
   const user = await prisma.user.findUnique({ where: { id: userId }, select: { stripeCustomerId: true } });
   if (!user?.stripeCustomerId) return NextResponse.json({ error: 'No subscription found' }, { status: 404 });
 
-  const session = await stripe.billingPortal.sessions.create({
+  const session = await getStripe().billingPortal.sessions.create({
     customer: user.stripeCustomerId,
     return_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/settings`,
   });

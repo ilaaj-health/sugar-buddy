@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { stripe } from '@/lib/stripe';
+import { stripe as getStripe } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
 
 export async function POST() {
@@ -12,7 +12,7 @@ export async function POST() {
 
   let customerId = user.stripeCustomerId;
   if (!customerId) {
-    const customer = await stripe.customers.create({ email: user.email, metadata: { userId } });
+    const customer = await getStripe().customers.create({ email: user.email, metadata: { userId } });
     customerId = customer.id;
     await prisma.user.update({ where: { id: userId }, data: { stripeCustomerId: customerId } });
   }
@@ -20,7 +20,7 @@ export async function POST() {
   const priceId = process.env.STRIPE_PRO_PRICE_ID;
   if (!priceId) return NextResponse.json({ error: 'Stripe price not configured' }, { status: 500 });
 
-  const session = await stripe.checkout.sessions.create({
+  const session = await getStripe().checkout.sessions.create({
     customer: customerId, mode: 'subscription',
     line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/dashboard?upgraded=true`,
