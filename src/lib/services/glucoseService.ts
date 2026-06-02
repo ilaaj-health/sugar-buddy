@@ -1,4 +1,4 @@
-import { Classification, ReadingType } from '@/generated/prisma';
+import { Classification, ReadingType } from '@/generated/prisma/client';
 import { classifyReading } from '@/lib/config/safety';
 
 export type { Classification, ReadingType };

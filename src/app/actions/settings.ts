@@ -3,7 +3,7 @@
 import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
-import { DiabetesType } from '@/generated/prisma';
+import { DiabetesType } from '@/generated/prisma/client';
 
 export type SettingsState = { success?: boolean; message?: string } | undefined;
 

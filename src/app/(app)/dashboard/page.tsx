@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getOrCreateDbUser } from "@/lib/getOrCreateUser";
 import { getClassificationLabel } from "@/lib/services/glucoseService";
-import type { Classification } from "@/generated/prisma";
+import type { Classification } from "@/generated/prisma/client";
 import { FileText, Bot, BarChart2, Settings, Bell, Activity, ShieldCheck, ChevronRight } from "lucide-react";
 
 const CLASSIFICATION_COLORS: Record<string, string> = {

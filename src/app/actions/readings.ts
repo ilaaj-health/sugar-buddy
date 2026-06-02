@@ -5,7 +5,7 @@ import { prisma } from '@/lib/db';
 import { classifyReading } from '@/lib/services/glucoseService';
 import { generateInterpretation } from '@/lib/services/aiService';
 import { checkEscalation } from '@/lib/services/safetyGate';
-import { ReadingType, Classification } from '@/generated/prisma';
+import { ReadingType, Classification } from '@/generated/prisma/client';
 
 export type ReadingState = {
   success?: boolean;

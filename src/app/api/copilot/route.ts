@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { checkUserInputSafety, processAIOutput } from "@/lib/services/safetyGate";
 import { getCopilotResponse } from "@/lib/services/aiService";
-import { ChatRole } from "@/generated/prisma";
+import { ChatRole } from "@/generated/prisma/client";
 
 export async function POST(request: Request) {
   const { userId } = await auth();
