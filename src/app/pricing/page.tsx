@@ -1,116 +1,130 @@
-import Link from "next/link";
-import { Navbar } from "@/components/Navbar";
-import { CheckCircle2, Zap } from "lucide-react";
+"use client";
 
-const plans = [
-  {
-    name: "Free",
-    nameUr: "Muft",
-    price: "Rs 0",
-    period: "/month",
-    desc: "Shuru karne ke liye bilkul free.",
-    features: [
-      "30 readings per month",
-      "AI tashreeh (explanation)",
-      "90-day trends",
-      "5 AI Chat messages/month",
-      "Safety alerts",
-    ],
-    cta: "Muft Shuru Karein",
-    href: "/signup",
-    highlighted: false,
-  },
-  {
-    name: "Pro",
-    nameUr: "Pro",
-    price: "Rs 500",
-    period: "/month",
-    desc: "Diabetes management ke liye sab kuch.",
-    features: [
-      "Unlimited readings",
-      "AI tashreeh (explanation)",
-      "90-day trends",
-      "Unlimited AI Chat",
-      "Safety alerts",
-      "Priority support",
-      "Export data (CSV)",
-    ],
-    cta: "Pro Lein",
-    href: "/signup",
-    highlighted: true,
-  },
+import Link from "next/link";
+import { useState } from "react";
+import { Navbar } from "@/components/Navbar";
+import { CheckCircle2, X, Zap, Crown, Loader2 } from "lucide-react";
+
+const FREE_FEATURES = [
+  { text: "5 readings per month", included: true },
+  { text: "Basic AI tashreeh", included: true },
+  { text: "7-day trends", included: true },
+  { text: "AI Chat — 10 messages/month", included: true },
+  { text: "Safety alerts", included: true },
+  { text: "Unlimited readings", included: false },
+  { text: "90-day trends & stats", included: false },
+  { text: "Unlimited AI Chat", included: false },
+  { text: "Export readings (CSV)", included: false },
 ];
 
-function PlanCard({
-  plan,
-}: {
-  plan: (typeof plans)[number];
-}) {
-  return (
-    <div
-      className={`relative bg-white rounded-2xl border p-7 flex flex-col ${
-        plan.highlighted
-          ? "border-primary shadow-xl shadow-primary/10 ring-2 ring-primary/20"
-          : "border-zinc-100"
-      }`}
-    >
-      {plan.highlighted && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg">
-          Popular
-        </div>
-      )}
-      <div className="mb-5">
-        <h3 className="text-lg font-bold text-zinc-900">
-          {plan.name}{" "}
-          <span className="text-sm font-normal text-zinc-400">({plan.nameUr})</span>
-        </h3>
-        <p className="text-sm text-zinc-500 mt-1">{plan.desc}</p>
-      </div>
-      <div className="mb-6">
-        <span className="text-4xl font-black text-zinc-900">{plan.price}</span>
-        <span className="text-sm text-zinc-400">{plan.period}</span>
-      </div>
-      <ul className="space-y-3 mb-8 flex-1">
-        {plan.features.map((f) => (
-          <li key={f} className="flex items-start gap-2.5">
-            <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-            <span className="text-sm text-zinc-600">{f}</span>
-          </li>
-        ))}
-      </ul>
-      <Link
-        href={plan.href}
-        className={`inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-bold rounded-xl transition-colors ${
-          plan.highlighted
-            ? "bg-primary text-white hover:bg-primary-dark shadow-lg shadow-primary/25"
-            : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
-        }`}
-      >
-        {plan.highlighted && <Zap className="w-4 h-4" />}
-        {plan.cta}
-      </Link>
-    </div>
-  );
-}
+const PRO_FEATURES = [
+  { text: "Unlimited readings", included: true },
+  { text: "Advanced AI tashreeh", included: true },
+  { text: "90-day trends & detailed stats", included: true },
+  { text: "Unlimited AI Chat", included: true },
+  { text: "Priority AI responses", included: true },
+  { text: "Export readings (CSV)", included: true },
+  { text: "Priority support", included: true },
+  { text: "Early access to new features", included: true },
+];
 
 export default function PricingPage() {
+  const [loading, setLoading] = useState(false);
+
+  async function handleUpgrade() {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/stripe/checkout", { method: "POST" });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert(data.error || "Something went wrong. Please try again.");
+      }
+    } catch {
+      alert("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Navbar activePage="pricing" />
+
       <main className="flex-1 py-16 sm:py-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-14">
             <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-3">Pricing</p>
-            <h1 className="text-3xl sm:text-4xl font-black text-zinc-900 mb-4">Sasta aur Aasaan</h1>
-            <p className="text-zinc-500 text-lg">Simple pricing for everyone. No hidden fees.</p>
+            <h1 className="text-3xl sm:text-4xl font-black text-zinc-900 mb-4">Sasti aur Asaan Plans</h1>
+            <p className="text-zinc-500 text-lg">Simple pricing — no hidden fees. Start free, upgrade when you need more.</p>
           </div>
+
           <div className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
-            {plans.map((plan) => (
-              <PlanCard key={plan.name} plan={plan} />
-            ))}
+            {/* Free Plan */}
+            <div className="bg-white border border-zinc-200 rounded-2xl p-7 flex flex-col">
+              <div className="mb-5">
+                <div className="flex items-center gap-2 mb-1">
+                  <Zap className="w-5 h-5 text-zinc-500" />
+                  <h3 className="text-lg font-bold text-zinc-900">Free</h3>
+                </div>
+                <p className="text-sm text-zinc-500">Shuru karne ke liye</p>
+              </div>
+              <div className="mb-6">
+                <span className="text-4xl font-black text-zinc-900">Rs 0</span>
+                <span className="text-sm text-zinc-400">/month</span>
+                <p className="text-xs text-zinc-400 mt-1">Hamesha free</p>
+              </div>
+              <Link href="/signup" className="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-zinc-700 bg-zinc-100 rounded-xl hover:bg-zinc-200 transition-colors mb-6">
+                Shuru Karein
+              </Link>
+              <ul className="space-y-3 flex-1">
+                {FREE_FEATURES.map((f) => (
+                  <li key={f.text} className="flex items-start gap-2.5">
+                    {f.included ? <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" /> : <X className="w-4 h-4 text-zinc-300 mt-0.5 shrink-0" />}
+                    <span className={`text-sm ${f.included ? "text-zinc-700" : "text-zinc-400"}`}>{f.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Pro Plan */}
+            <div className="relative bg-white border-2 border-primary rounded-2xl p-7 flex flex-col">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-bold px-4 py-1 rounded-full flex items-center gap-1">
+                <Crown className="w-3 h-3" /> Popular
+              </div>
+              <div className="mb-5">
+                <div className="flex items-center gap-2 mb-1">
+                  <Crown className="w-5 h-5 text-primary" />
+                  <h3 className="text-lg font-bold text-zinc-900">Pro</h3>
+                </div>
+                <p className="text-sm text-zinc-500">Sab kuch unlimited</p>
+              </div>
+              <div className="mb-6">
+                <span className="text-4xl font-black text-zinc-900">Rs 1,000</span>
+                <span className="text-sm text-zinc-400">/month</span>
+                <p className="text-xs text-zinc-400 mt-1">Cancel anytime</p>
+              </div>
+              <button
+                onClick={handleUpgrade}
+                disabled={loading}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold text-white bg-primary rounded-xl hover:bg-primary-dark disabled:opacity-50 transition-colors shadow-lg shadow-primary/25 mb-6"
+              >
+                {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Redirecting...</> : <><Zap className="w-4 h-4" /> Pro Shuru Karein</>}
+              </button>
+              <ul className="space-y-3 flex-1">
+                {PRO_FEATURES.map((f) => (
+                  <li key={f.text} className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                    <span className="text-sm text-zinc-700">{f.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
+
           <p className="text-center text-xs text-zinc-400 mt-8">
-            Sab plans mein safety alerts aur Roman Urdu explanations shamil hain.
+            Dono plans mein safety alerts aur Roman Urdu support shamil hain.
           </p>
         </div>
       </main>
