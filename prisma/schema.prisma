@@ -1,0 +1,156 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum DiabetesType {
+  TYPE_1
+  TYPE_2
+  PRE_DIABETIC
+  NOT_SURE
+}
+
+enum ReadingType {
+  FASTING
+  POST_MEAL
+  RANDOM
+  BEDTIME
+}
+
+enum Classification {
+  LOW
+  IN_RANGE
+  HIGH
+  DANGER
+}
+
+enum ReminderKind {
+  TEST
+  MEDICATION
+  CHECKIN
+}
+
+enum EscalationStatus {
+  PENDING
+  CONTACTED
+  RESOLVED
+}
+
+enum ChatRole {
+  USER
+  ASSISTANT
+}
+
+model User {
+  id           String        @id
+  email        String        @unique
+  name         String?
+  age          Int?
+  diabetesType DiabetesType?
+  onInsulin    Boolean       @default(false)
+  targetRanges Json?
+  consentAt    DateTime?
+  onboarded    Boolean       @default(false)
+  plan         String        @default("free")
+  stripeCustomerId   String? @unique
+  stripeSubscriptionId String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  readings          Reading[]
+  checkIns          CheckIn[]
+  reminderSettings  ReminderSetting[]
+  pushSubscriptions PushSubscription[]
+  chatMessages      ChatMessage[]
+  escalationEvents  EscalationEvent[]
+
+  @@index([email])
+}
+
+model Reading {
+  id             String         @id @default(cuid())
+  userId         String
+  value          Float
+  type           ReadingType
+  classification Classification
+  interpretation String?        @db.Text
+  takenAt        DateTime       @default(now())
+  createdAt      DateTime       @default(now())
+
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  checkIn          CheckIn?
+  escalationEvents EscalationEvent[]
+
+  @@index([userId, takenAt])
+  @@index([userId, type])
+}
+
+model CheckIn {
+  id          String   @id @default(cuid())
+  userId      String
+  feelingNote String?  @db.Text
+  readingId   String?  @unique
+  createdAt   DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reading Reading? @relation(fields: [readingId], references: [id])
+
+  @@index([userId, createdAt])
+}
+
+model ReminderSetting {
+  id       String       @id @default(cuid())
+  userId   String
+  kind     ReminderKind
+  times    Json
+  channels Json         @default("{\"email\": true, \"webPush\": false}")
+  enabled  Boolean      @default(true)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, kind])
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String   @db.Text
+  keys      Json
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  userId    String
+  role      ChatRole
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model EscalationEvent {
+  id               String           @id @default(cuid())
+  userId           String
+  triggerReadingId String?
+  reason           String           @db.Text
+  status           EscalationStatus @default(PENDING)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  triggerReading Reading? @relation(fields: [triggerReadingId], references: [id])
+
+  @@index([userId, status])
+  @@index([status])
+}
