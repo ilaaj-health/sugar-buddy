@@ -2,13 +2,14 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
 import TrendsChart from "./TrendsChart";
-import { BarChart2 } from "lucide-react";
-import { getTrendsDaysLimit } from "@/lib/planLimits";
+import { BarChart2, Download, FileText } from "lucide-react";
+import { getTrendsDaysLimit, getUserPlan } from "@/lib/planLimits";
 
 export default async function TrendsPage() {
   const { userId } = await auth();
   if (!userId) redirect("/login");
 
+  const plan = await getUserPlan(userId);
   const trendsDays = await getTrendsDaysLimit(userId);
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - trendsDays);
@@ -42,6 +43,20 @@ export default async function TrendsPage() {
         <div className="bg-white rounded-xl border border-zinc-100 p-4 text-center"><div className="text-2xl font-bold text-amber-600">{stats.highest}</div><div className="text-xs text-text-secondary mt-1">Highest</div></div>
         <div className="bg-white rounded-xl border border-zinc-100 p-4 text-center"><div className="text-2xl font-bold text-blue-600">{stats.lowest}</div><div className="text-xs text-text-secondary mt-1">Lowest</div></div>
       </div>
+
+      {plan === 'pro' && (
+        <div className="mb-4 flex flex-wrap items-center gap-2">
+          <a href="/api/export/csv" download className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium text-primary bg-primary-light rounded-lg hover:bg-emerald-100 transition-colors">
+            <Download className="w-3.5 h-3.5" /> Export CSV
+          </a>
+          <a href="/api/export/pdf?days=30" download className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+            <FileText className="w-3.5 h-3.5" /> PDF 30 Days
+          </a>
+          <a href="/api/export/pdf?days=90" download className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium text-violet-600 bg-violet-50 rounded-lg hover:bg-violet-100 transition-colors">
+            <FileText className="w-3.5 h-3.5" /> PDF 90 Days
+          </a>
+        </div>
+      )}
 
       {readings.length === 0 ? (
         <div className="bg-white rounded-2xl border border-zinc-100 p-8 text-center">

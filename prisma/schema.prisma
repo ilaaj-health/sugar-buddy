@@ -78,6 +78,7 @@ model Reading {
   type           ReadingType
   classification Classification
   interpretation String?        @db.Text
+  notes          String?        @db.Text
   takenAt        DateTime       @default(now())
   createdAt      DateTime       @default(now())
 

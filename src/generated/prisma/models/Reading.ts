@@ -41,6 +41,7 @@ export type ReadingMinAggregateOutputType = {
   type: $Enums.ReadingType | null
   classification: $Enums.Classification | null
   interpretation: string | null
+  notes: string | null
   takenAt: Date | null
   createdAt: Date | null
 }
@@ -52,6 +53,7 @@ export type ReadingMaxAggregateOutputType = {
   type: $Enums.ReadingType | null
   classification: $Enums.Classification | null
   interpretation: string | null
+  notes: string | null
   takenAt: Date | null
   createdAt: Date | null
 }
@@ -63,6 +65,7 @@ export type ReadingCountAggregateOutputType = {
   type: number
   classification: number
   interpretation: number
+  notes: number
   takenAt: number
   createdAt: number
   _all: number
@@ -84,6 +87,7 @@ export type ReadingMinAggregateInputType = {
   type?: true
   classification?: true
   interpretation?: true
+  notes?: true
   takenAt?: true
   createdAt?: true
 }
@@ -95,6 +99,7 @@ export type ReadingMaxAggregateInputType = {
   type?: true
   classification?: true
   interpretation?: true
+  notes?: true
   takenAt?: true
   createdAt?: true
 }
@@ -106,6 +111,7 @@ export type ReadingCountAggregateInputType = {
   type?: true
   classification?: true
   interpretation?: true
+  notes?: true
   takenAt?: true
   createdAt?: true
   _all?: true
@@ -204,6 +210,7 @@ export type ReadingGroupByOutputType = {
   type: $Enums.ReadingType
   classification: $Enums.Classification
   interpretation: string | null
+  notes: string | null
   takenAt: Date
   createdAt: Date
   _count: ReadingCountAggregateOutputType | null
@@ -238,6 +245,7 @@ export type ReadingWhereInput = {
   type?: Prisma.EnumReadingTypeFilter<"Reading"> | $Enums.ReadingType
   classification?: Prisma.EnumClassificationFilter<"Reading"> | $Enums.Classification
   interpretation?: Prisma.StringNullableFilter<"Reading"> | string | null
+  notes?: Prisma.StringNullableFilter<"Reading"> | string | null
   takenAt?: Prisma.DateTimeFilter<"Reading"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Reading"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -252,6 +260,7 @@ export type ReadingOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   classification?: Prisma.SortOrder
   interpretation?: Prisma.SortOrderInput | Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   takenAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -269,6 +278,7 @@ export type ReadingWhereUniqueInput = Prisma.AtLeast<{
   type?: Prisma.EnumReadingTypeFilter<"Reading"> | $Enums.ReadingType
   classification?: Prisma.EnumClassificationFilter<"Reading"> | $Enums.Classification
   interpretation?: Prisma.StringNullableFilter<"Reading"> | string | null
+  notes?: Prisma.StringNullableFilter<"Reading"> | string | null
   takenAt?: Prisma.DateTimeFilter<"Reading"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Reading"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -283,6 +293,7 @@ export type ReadingOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   classification?: Prisma.SortOrder
   interpretation?: Prisma.SortOrderInput | Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   takenAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.ReadingCountOrderByAggregateInput
@@ -302,6 +313,7 @@ export type ReadingScalarWhereWithAggregatesInput = {
   type?: Prisma.EnumReadingTypeWithAggregatesFilter<"Reading"> | $Enums.ReadingType
   classification?: Prisma.EnumClassificationWithAggregatesFilter<"Reading"> | $Enums.Classification
   interpretation?: Prisma.StringNullableWithAggregatesFilter<"Reading"> | string | null
+  notes?: Prisma.StringNullableWithAggregatesFilter<"Reading"> | string | null
   takenAt?: Prisma.DateTimeWithAggregatesFilter<"Reading"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Reading"> | Date | string
 }
@@ -312,6 +324,7 @@ export type ReadingCreateInput = {
   type: $Enums.ReadingType
   classification: $Enums.Classification
   interpretation?: string | null
+  notes?: string | null
   takenAt?: Date | string
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutReadingsInput
@@ -326,6 +339,7 @@ export type ReadingUncheckedCreateInput = {
   type: $Enums.ReadingType
   classification: $Enums.Classification
   interpretation?: string | null
+  notes?: string | null
   takenAt?: Date | string
   createdAt?: Date | string
   checkIn?: Prisma.CheckInUncheckedCreateNestedOneWithoutReadingInput
@@ -338,6 +352,7 @@ export type ReadingUpdateInput = {
   type?: Prisma.EnumReadingTypeFieldUpdateOperationsInput | $Enums.ReadingType
   classification?: Prisma.EnumClassificationFieldUpdateOperationsInput | $Enums.Classification
   interpretation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   takenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutReadingsNestedInput
@@ -352,6 +367,7 @@ export type ReadingUncheckedUpdateInput = {
   type?: Prisma.EnumReadingTypeFieldUpdateOperationsInput | $Enums.ReadingType
   classification?: Prisma.EnumClassificationFieldUpdateOperationsInput | $Enums.Classification
   interpretation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   takenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkIn?: Prisma.CheckInUncheckedUpdateOneWithoutReadingNestedInput
@@ -365,6 +381,7 @@ export type ReadingCreateManyInput = {
   type: $Enums.ReadingType
   classification: $Enums.Classification
   interpretation?: string | null
+  notes?: string | null
   takenAt?: Date | string
   createdAt?: Date | string
 }
@@ -375,6 +392,7 @@ export type ReadingUpdateManyMutationInput = {
   type?: Prisma.EnumReadingTypeFieldUpdateOperationsInput | $Enums.ReadingType
   classification?: Prisma.EnumClassificationFieldUpdateOperationsInput | $Enums.Classification
   interpretation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   takenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -386,6 +404,7 @@ export type ReadingUncheckedUpdateManyInput = {
   type?: Prisma.EnumReadingTypeFieldUpdateOperationsInput | $Enums.ReadingType
   classification?: Prisma.EnumClassificationFieldUpdateOperationsInput | $Enums.Classification
   interpretation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   takenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -407,6 +426,7 @@ export type ReadingCountOrderByAggregateInput = {
   type?: Prisma.SortOrder
   classification?: Prisma.SortOrder
   interpretation?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   takenAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -422,6 +442,7 @@ export type ReadingMaxOrderByAggregateInput = {
   type?: Prisma.SortOrder
   classification?: Prisma.SortOrder
   interpretation?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   takenAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -433,6 +454,7 @@ export type ReadingMinOrderByAggregateInput = {
   type?: Prisma.SortOrder
   classification?: Prisma.SortOrder
   interpretation?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   takenAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -542,6 +564,7 @@ export type ReadingCreateWithoutUserInput = {
   type: $Enums.ReadingType
   classification: $Enums.Classification
   interpretation?: string | null
+  notes?: string | null
   takenAt?: Date | string
   createdAt?: Date | string
   checkIn?: Prisma.CheckInCreateNestedOneWithoutReadingInput
@@ -554,6 +577,7 @@ export type ReadingUncheckedCreateWithoutUserInput = {
   type: $Enums.ReadingType
   classification: $Enums.Classification
   interpretation?: string | null
+  notes?: string | null
   takenAt?: Date | string
   createdAt?: Date | string
   checkIn?: Prisma.CheckInUncheckedCreateNestedOneWithoutReadingInput
@@ -596,6 +620,7 @@ export type ReadingScalarWhereInput = {
   type?: Prisma.EnumReadingTypeFilter<"Reading"> | $Enums.ReadingType
   classification?: Prisma.EnumClassificationFilter<"Reading"> | $Enums.Classification
   interpretation?: Prisma.StringNullableFilter<"Reading"> | string | null
+  notes?: Prisma.StringNullableFilter<"Reading"> | string | null
   takenAt?: Prisma.DateTimeFilter<"Reading"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Reading"> | Date | string
 }
@@ -606,6 +631,7 @@ export type ReadingCreateWithoutCheckInInput = {
   type: $Enums.ReadingType
   classification: $Enums.Classification
   interpretation?: string | null
+  notes?: string | null
   takenAt?: Date | string
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutReadingsInput
@@ -619,6 +645,7 @@ export type ReadingUncheckedCreateWithoutCheckInInput = {
   type: $Enums.ReadingType
   classification: $Enums.Classification
   interpretation?: string | null
+  notes?: string | null
   takenAt?: Date | string
   createdAt?: Date | string
   escalationEvents?: Prisma.EscalationEventUncheckedCreateNestedManyWithoutTriggerReadingInput
@@ -646,6 +673,7 @@ export type ReadingUpdateWithoutCheckInInput = {
   type?: Prisma.EnumReadingTypeFieldUpdateOperationsInput | $Enums.ReadingType
   classification?: Prisma.EnumClassificationFieldUpdateOperationsInput | $Enums.Classification
   interpretation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   takenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutReadingsNestedInput
@@ -659,6 +687,7 @@ export type ReadingUncheckedUpdateWithoutCheckInInput = {
   type?: Prisma.EnumReadingTypeFieldUpdateOperationsInput | $Enums.ReadingType
   classification?: Prisma.EnumClassificationFieldUpdateOperationsInput | $Enums.Classification
   interpretation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   takenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   escalationEvents?: Prisma.EscalationEventUncheckedUpdateManyWithoutTriggerReadingNestedInput
@@ -670,6 +699,7 @@ export type ReadingCreateWithoutEscalationEventsInput = {
   type: $Enums.ReadingType
   classification: $Enums.Classification
   interpretation?: string | null
+  notes?: string | null
   takenAt?: Date | string
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutReadingsInput
@@ -683,6 +713,7 @@ export type ReadingUncheckedCreateWithoutEscalationEventsInput = {
   type: $Enums.ReadingType
   classification: $Enums.Classification
   interpretation?: string | null
+  notes?: string | null
   takenAt?: Date | string
   createdAt?: Date | string
   checkIn?: Prisma.CheckInUncheckedCreateNestedOneWithoutReadingInput
@@ -710,6 +741,7 @@ export type ReadingUpdateWithoutEscalationEventsInput = {
   type?: Prisma.EnumReadingTypeFieldUpdateOperationsInput | $Enums.ReadingType
   classification?: Prisma.EnumClassificationFieldUpdateOperationsInput | $Enums.Classification
   interpretation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   takenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutReadingsNestedInput
@@ -723,6 +755,7 @@ export type ReadingUncheckedUpdateWithoutEscalationEventsInput = {
   type?: Prisma.EnumReadingTypeFieldUpdateOperationsInput | $Enums.ReadingType
   classification?: Prisma.EnumClassificationFieldUpdateOperationsInput | $Enums.Classification
   interpretation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   takenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkIn?: Prisma.CheckInUncheckedUpdateOneWithoutReadingNestedInput
@@ -734,6 +767,7 @@ export type ReadingCreateManyUserInput = {
   type: $Enums.ReadingType
   classification: $Enums.Classification
   interpretation?: string | null
+  notes?: string | null
   takenAt?: Date | string
   createdAt?: Date | string
 }
@@ -744,6 +778,7 @@ export type ReadingUpdateWithoutUserInput = {
   type?: Prisma.EnumReadingTypeFieldUpdateOperationsInput | $Enums.ReadingType
   classification?: Prisma.EnumClassificationFieldUpdateOperationsInput | $Enums.Classification
   interpretation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   takenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkIn?: Prisma.CheckInUpdateOneWithoutReadingNestedInput
@@ -756,6 +791,7 @@ export type ReadingUncheckedUpdateWithoutUserInput = {
   type?: Prisma.EnumReadingTypeFieldUpdateOperationsInput | $Enums.ReadingType
   classification?: Prisma.EnumClassificationFieldUpdateOperationsInput | $Enums.Classification
   interpretation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   takenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checkIn?: Prisma.CheckInUncheckedUpdateOneWithoutReadingNestedInput
@@ -768,6 +804,7 @@ export type ReadingUncheckedUpdateManyWithoutUserInput = {
   type?: Prisma.EnumReadingTypeFieldUpdateOperationsInput | $Enums.ReadingType
   classification?: Prisma.EnumClassificationFieldUpdateOperationsInput | $Enums.Classification
   interpretation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   takenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -810,6 +847,7 @@ export type ReadingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   type?: boolean
   classification?: boolean
   interpretation?: boolean
+  notes?: boolean
   takenAt?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -825,6 +863,7 @@ export type ReadingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   type?: boolean
   classification?: boolean
   interpretation?: boolean
+  notes?: boolean
   takenAt?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -837,6 +876,7 @@ export type ReadingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   type?: boolean
   classification?: boolean
   interpretation?: boolean
+  notes?: boolean
   takenAt?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -849,11 +889,12 @@ export type ReadingSelectScalar = {
   type?: boolean
   classification?: boolean
   interpretation?: boolean
+  notes?: boolean
   takenAt?: boolean
   createdAt?: boolean
 }
 
-export type ReadingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "value" | "type" | "classification" | "interpretation" | "takenAt" | "createdAt", ExtArgs["result"]["reading"]>
+export type ReadingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "value" | "type" | "classification" | "interpretation" | "notes" | "takenAt" | "createdAt", ExtArgs["result"]["reading"]>
 export type ReadingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   checkIn?: boolean | Prisma.Reading$checkInArgs<ExtArgs>
@@ -881,6 +922,7 @@ export type $ReadingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     type: $Enums.ReadingType
     classification: $Enums.Classification
     interpretation: string | null
+    notes: string | null
     takenAt: Date
     createdAt: Date
   }, ExtArgs["result"]["reading"]>
@@ -1315,6 +1357,7 @@ export interface ReadingFieldRefs {
   readonly type: Prisma.FieldRef<"Reading", 'ReadingType'>
   readonly classification: Prisma.FieldRef<"Reading", 'Classification'>
   readonly interpretation: Prisma.FieldRef<"Reading", 'String'>
+  readonly notes: Prisma.FieldRef<"Reading", 'String'>
   readonly takenAt: Prisma.FieldRef<"Reading", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Reading", 'DateTime'>
 }

@@ -17,10 +17,64 @@
       "status": "completed",
       "completed_at": "2026-06-03T03:54:14.218Z",
       "duration_ms": 48795
+    },
+    {
+      "agent_id": "a2f6479708f6fde06",
+      "agent_type": "general-purpose",
+      "started_at": "2026-06-03T05:48:03.643Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-06-03T05:52:52.882Z",
+      "duration_ms": 289239
+    },
+    {
+      "agent_id": "a8b4cb3fd1eb7a8d3",
+      "agent_type": "general-purpose",
+      "started_at": "2026-06-03T05:48:21.624Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-06-03T05:51:39.726Z",
+      "duration_ms": 198102
+    },
+    {
+      "agent_id": "a128de1fbf016fc3f",
+      "agent_type": "general-purpose",
+      "started_at": "2026-06-03T06:09:52.552Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-06-03T06:12:07.403Z",
+      "duration_ms": 134851
+    },
+    {
+      "agent_id": "a5f446a747e53bdf6",
+      "agent_type": "general-purpose",
+      "started_at": "2026-06-03T06:10:33.665Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-06-03T06:13:31.944Z",
+      "duration_ms": 178279
+    },
+    {
+      "agent_id": "a9da96d7222bd479e",
+      "agent_type": "general-purpose",
+      "started_at": "2026-06-03T11:05:01.684Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-06-03T11:07:05.114Z",
+      "duration_ms": 123430
+    },
+    {
+      "agent_id": "a2a1d265da872618f",
+      "agent_type": "general-purpose",
+      "started_at": "2026-06-03T11:06:11.904Z",
+      "parent_mode": "none",
+      "status": "completed",
+      "completed_at": "2026-06-03T11:07:57.019Z",
+      "duration_ms": 105115
     }
   ],
-  "total_spawned": 2,
-  "total_completed": 2,
+  "total_spawned": 8,
+  "total_completed": 8,
   "total_failed": 0,
-  "last_updated": "2026-06-03T03:55:25.369Z"
+  "last_updated": "2026-06-03T11:07:57.130Z"
 }

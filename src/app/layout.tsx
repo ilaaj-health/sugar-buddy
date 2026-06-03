@@ -13,6 +13,13 @@ export const metadata: Metadata = {
   title: "Sugar Buddy — Smart Glucose Tracker",
   description: "Sugar Buddy — Diabetes management app for Pakistan. Apni Sugar readings log karein, Roman Urdu mein AI tashreeh haasil karein, aur apni sehat ke rujhaanaat dekhein.",
   keywords: ["diabetes", "sugar", "glucose", "Pakistan", "Urdu", "sugar buddy"],
+  manifest: "/manifest.json",
+  themeColor: "#059669",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Sugar Buddy",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

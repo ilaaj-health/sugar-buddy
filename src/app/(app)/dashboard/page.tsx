@@ -7,6 +7,8 @@ import { getClassificationLabel } from "@/lib/services/glucoseService";
 import type { Classification } from "@/generated/prisma/client";
 import { FileText, Bot, BarChart2, Settings, Bell, Activity, ShieldCheck, ChevronRight } from "lucide-react";
 import { StreakCard, GoalCard, InsightsCard, DailyTipCard } from "./DashboardClient";
+import { WeeklyReportCard } from "./WeeklyReport";
+import { MedicineCard } from "./MedicineCard";
 
 const CLASSIFICATION_COLORS: Record<string, string> = {
   LOW: "bg-blue-100 text-blue-800",
@@ -44,11 +46,16 @@ export default async function DashboardPage() {
       <StreakCard />
       <DailyTipCard />
 
+      {/* Medicine Reminders */}
+      <MedicineCard />
+
       {/* AI Insights */}
       <InsightsCard />
 
       {/* Goal Progress */}
       <GoalCard />
+
+      <WeeklyReportCard />
 
       {latestReading ? (
         <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm p-6 mb-6">
@@ -71,6 +78,7 @@ export default async function DashboardPage() {
               <p className="text-sm text-zinc-700 whitespace-pre-line leading-relaxed">{latestReading.interpretation}</p>
             </div>
           )}
+          {latestReading.notes && <p className="text-xs text-zinc-500 mt-2 italic">Note: {latestReading.notes}</p>}
         </div>
       ) : (
         <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm p-8 mb-6 text-center">

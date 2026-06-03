@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignOutButton } from "@clerk/nextjs";
-import { Home, FileText, BarChart2, Bot, Settings, LogOut } from "lucide-react";
+import { Home, FileText, BarChart2, Bot, Pill, Users, Settings, LogOut } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
 
 const NAV_ITEMS = [
@@ -11,6 +11,8 @@ const NAV_ITEMS = [
   { href: "/log", label: "Reading Log", icon: FileText },
   { href: "/trends", label: "Trends", icon: BarChart2 },
   { href: "/copilot", label: "AI Chat", icon: Bot },
+  { href: "/medicines", label: "Medicines", icon: Pill },
+  { href: "/family", label: "Family", icon: Users },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 

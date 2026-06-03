@@ -30,6 +30,7 @@ export async function logReading(state: ReadingState, formData: FormData): Promi
   const valueRaw = formData.get('value') as string;
   const type = formData.get('type') as string;
   const takenAtRaw = formData.get('takenAt') as string;
+  const notes = (formData.get('notes') as string)?.trim() || null;
 
   const value = parseFloat(valueRaw);
   if (isNaN(value) || value < 1 || value > 999) {
@@ -56,6 +57,7 @@ export async function logReading(state: ReadingState, formData: FormData): Promi
       type: type as ReadingType,
       classification: classification as Classification,
       takenAt,
+      notes,
     },
   });
 

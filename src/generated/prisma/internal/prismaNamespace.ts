@@ -994,6 +994,7 @@ export const ReadingScalarFieldEnum = {
   type: 'type',
   classification: 'classification',
   interpretation: 'interpretation',
+  notes: 'notes',
   takenAt: 'takenAt',
   createdAt: 'createdAt'
 } as const
