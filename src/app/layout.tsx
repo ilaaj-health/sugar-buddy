@@ -18,8 +18,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <ClerkProvider>
-      <html lang="en" className={`${spaceGrotesk.variable} h-full antialiased`}>
-        <body className="min-h-full flex flex-col bg-white text-zinc-900 font-sans">
+      <html lang="en" className={`${spaceGrotesk.variable} antialiased`}>
+        <body className="bg-white text-zinc-900 font-sans">
           {children}
         </body>
       </html>

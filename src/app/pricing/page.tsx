@@ -5,6 +5,8 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { HeroSection } from "@/components/HeroSection";
 import { CheckCircle2, X, Zap, Crown, Loader2 } from "lucide-react";
 
 const FREE_FEATURES = [
@@ -90,14 +92,10 @@ function PricingContent() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Navbar activePage="pricing" />
+      <HeroSection tag="Pricing" title="Sasti aur Asaan Plans" subtitle="Simple pricing — no hidden fees. Start free, upgrade when you need more." />
 
-      <main className="flex-1 py-16 sm:py-24">
+      <main className="flex-1 py-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-14">
-            <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-3">Pricing</p>
-            <h1 className="text-3xl sm:text-4xl font-black text-zinc-900 mb-4">Sasti aur Asaan Plans</h1>
-            <p className="text-zinc-500 text-lg">Simple pricing — no hidden fees. Start free, upgrade when you need more.</p>
-          </div>
 
           <div className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
             {/* Free Plan */}
@@ -173,6 +171,8 @@ function PricingContent() {
           </p>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }
