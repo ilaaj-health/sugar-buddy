@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { stripe } from '@/lib/stripe';
+import { stripe as getStripe } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
 import type Stripe from 'stripe';
 
@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   if (!signature) return NextResponse.json({ error: 'Missing signature' }, { status: 400 });
 
   let event: Stripe.Event;
-  try { event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET || ''); }
+  try { event = getStripe().webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET || ''); }
   catch { return NextResponse.json({ error: 'Invalid signature' }, { status: 400 }); }
 
   switch (event.type) {

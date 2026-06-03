@@ -5,7 +5,9 @@ import { prisma } from '@/lib/db';
 import { classifyReading } from '@/lib/services/glucoseService';
 import { generateInterpretation } from '@/lib/services/aiService';
 import { checkEscalation } from '@/lib/services/safetyGate';
-import { ReadingType, Classification } from '@/generated/prisma';
+import { checkReadingLimit } from '@/lib/planLimits';
+import { updateStreak } from '@/lib/services/streakService';
+import { ReadingType, Classification } from '@/generated/prisma/client';
 
 export type ReadingState = {
   success?: boolean;
@@ -13,11 +15,17 @@ export type ReadingState = {
   reading?: { value: number; classification: string };
   interpretation?: string;
   escalation?: { reason: string };
+  streak?: { currentStreak: number; longestStreak: number; newBadges: string[] };
 } | undefined;
 
 export async function logReading(state: ReadingState, formData: FormData): Promise<ReadingState> {
   const { userId } = await auth();
   if (!userId) throw new Error('You must be signed in to log a reading.');
+
+  const readingLimit = await checkReadingLimit(userId);
+  if (!readingLimit.allowed) {
+    return { message: `Aap ki monthly reading limit (${readingLimit.limit}) poori ho gayi hai. Pro plan lein for unlimited readings.` };
+  }
 
   const valueRaw = formData.get('value') as string;
   const type = formData.get('type') as string;
@@ -69,10 +77,19 @@ export async function logReading(state: ReadingState, formData: FormData): Promi
     });
   }
 
+  // Update streak
+  let streakResult;
+  try {
+    streakResult = await updateStreak(userId);
+  } catch (e) {
+    console.error('Failed to update streak:', e);
+  }
+
   return {
     success: true,
     reading: { value, classification },
     interpretation,
     escalation: escalation?.shouldEscalate ? { reason: escalation.reason } : undefined,
+    streak: streakResult,
   };
 }

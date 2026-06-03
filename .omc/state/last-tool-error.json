@@ -1,0 +1,7 @@
+{
+  "tool_name": "PowerShell",
+  "tool_input_preview": "{\"command\":\"Set-Location \\\"C:\\\\codex\\\\sugar-buddy-fresh\\\"; npx tsc --noEmit 2>&1 | Select-String -Pattern \\\"streakService|tipsService|insightsService\\\" | Select-Object -First 20\",\"timeout\":60000,\"desc...",
+  "error": "Exit code 2",
+  "timestamp": "2026-06-03T03:55:15.845Z",
+  "retry_count": 2
+}

@@ -1,4 +1,4 @@
-import { Classification } from '@/generated/prisma';
+import { Classification } from '@/generated/prisma/client';
 
 export const GLUCOSE_THRESHOLDS = {
   DANGER_LOW: 70,

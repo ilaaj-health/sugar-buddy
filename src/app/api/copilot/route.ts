@@ -3,11 +3,17 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { checkUserInputSafety, processAIOutput } from "@/lib/services/safetyGate";
 import { getCopilotResponse } from "@/lib/services/aiService";
-import { ChatRole } from "@/generated/prisma";
+import { ChatRole } from "@/generated/prisma/client";
+import { checkChatLimit } from "@/lib/planLimits";
 
 export async function POST(request: Request) {
   const { userId } = await auth();
   if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const chatLimit = await checkChatLimit(userId);
+  if (!chatLimit.allowed) {
+    return NextResponse.json({ response: `Aap ki monthly AI Chat limit (${chatLimit.limit} messages) poori ho gayi hai. Pro plan lein for unlimited chat.\n\nYaad rakhein: Yeh tibbi mashwarah nahi hai.` });
+  }
 
   let body: { message?: string };
   try { body = await request.json(); } catch { return NextResponse.json({ error: "Invalid request body" }, { status: 400 }); }
