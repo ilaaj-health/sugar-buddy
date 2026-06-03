@@ -6,6 +6,7 @@ import { getOrCreateDbUser } from "@/lib/getOrCreateUser";
 import { getClassificationLabel } from "@/lib/services/glucoseService";
 import type { Classification } from "@/generated/prisma/client";
 import { FileText, Bot, BarChart2, Settings, Bell, Activity, ShieldCheck, ChevronRight } from "lucide-react";
+import { StreakCard, GoalCard, InsightsCard, DailyTipCard } from "./DashboardClient";
 
 const CLASSIFICATION_COLORS: Record<string, string> = {
   LOW: "bg-blue-100 text-blue-800",
@@ -38,6 +39,16 @@ export default async function DashboardPage() {
         <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-1">Assalam-o-Alaikum, {userName}!</h1>
         <p className="text-text-secondary text-base">Aaj aap ki sehat kaisi hai? (How are you feeling today?)</p>
       </div>
+
+      {/* Streak + Daily Tip */}
+      <StreakCard />
+      <DailyTipCard />
+
+      {/* AI Insights */}
+      <InsightsCard />
+
+      {/* Goal Progress */}
+      <GoalCard />
 
       {latestReading ? (
         <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm p-6 mb-6">

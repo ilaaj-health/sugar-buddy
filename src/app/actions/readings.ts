@@ -6,6 +6,7 @@ import { classifyReading } from '@/lib/services/glucoseService';
 import { generateInterpretation } from '@/lib/services/aiService';
 import { checkEscalation } from '@/lib/services/safetyGate';
 import { checkReadingLimit } from '@/lib/planLimits';
+import { updateStreak } from '@/lib/services/streakService';
 import { ReadingType, Classification } from '@/generated/prisma/client';
 
 export type ReadingState = {
@@ -14,6 +15,7 @@ export type ReadingState = {
   reading?: { value: number; classification: string };
   interpretation?: string;
   escalation?: { reason: string };
+  streak?: { currentStreak: number; longestStreak: number; newBadges: string[] };
 } | undefined;
 
 export async function logReading(state: ReadingState, formData: FormData): Promise<ReadingState> {
@@ -75,10 +77,19 @@ export async function logReading(state: ReadingState, formData: FormData): Promi
     });
   }
 
+  // Update streak
+  let streakResult;
+  try {
+    streakResult = await updateStreak(userId);
+  } catch (e) {
+    console.error('Failed to update streak:', e);
+  }
+
   return {
     success: true,
     reading: { value, classification },
     interpretation,
     escalation: escalation?.shouldEscalate ? { reason: escalation.reason } : undefined,
+    streak: streakResult,
   };
 }
